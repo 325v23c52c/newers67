@@ -1,7 +1,7 @@
 name: Збірка APK для Android 9 та 13
 
 on:
-  workflow_dispatch: # Запуск вручну по кнопці
+  workflow_dispatch:
   push:
     branches: [ main ]
 
@@ -10,18 +10,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Отримання вихідного коду (main.py та buildozer.spec)
+      - name: Отримання вихідного коду
         uses: actions/checkout@v4
 
-      # Офіційний контейнер Buildozer Action з встановленими SDK/NDK
-      - name: Компіляція APK через Buildozer Action
+      - name: Компіляція APK через офіційний Buildozer Action
         uses: ArtemSBulgakov/buildozer-action@v1
         id: buildozer
         with:
           command: buildozer android debug
           buildozer_version: stable
 
-      # Збереження готового .apk файлу в артефакти
       - name: Завантаження готового APK
         uses: actions/upload-artifact@v4
         with:
