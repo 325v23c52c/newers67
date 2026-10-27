@@ -18,12 +18,15 @@ source.include_exts = py,png,jpg,kv,atlas
 version = 1.0.0
 
 # (list) Залежності додатку
-requirements = python3,kivy,urllib3,certifi,plyer
+requirements = python3,kivy
 
 # (str) Орієнтація екрану (portrait / landscape / all)
 orientation = portrait
 
 # ================= НАЛАШТУВАННЯ ДЛЯ ANDROID 9 ТА ANDROID 13 =================
+# Автоматична згода з ліцензіями Android SDK (ОБОВ'ЯЗКОВО для GitHub Actions!)
+android.accept_sdk_license = True
+
 # android.minapi = 28 забезпечує підтримку Android 9 (Pie)
 android.minapi = 28
 
