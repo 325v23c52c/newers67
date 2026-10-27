@@ -1,37 +1,29 @@
-name: Збірка APK для Android 9 та 13 (32 та 64 біти)
+name: Збірка APK для Android 9 та 13
 
 on:
   workflow_dispatch: # Запуск вручну по кнопці
+  push:
+    branches: [ main ]
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Отримання коду
+      - name: Отримання вихідного коду (main.py та buildozer.spec)
         uses: actions/checkout@v4
 
-      - name: Налаштування Python
-        uses: actions/setup-python@v5
+      # Офіційний контейнер Buildozer Action з встановленими SDK/NDK
+      - name: Компіляція APK через Buildozer Action
+        uses: ArtemSBulgakov/buildozer-action@v1
+        id: buildozer
         with:
-          python-version: '3.10'
+          command: buildozer android debug
+          buildozer_version: stable
 
-      - name: Встановлення системних залежностей
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y git zip unzip openjdk-17-jdk autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
-
-      - name: Встановлення Buildozer та Cython
-        run: |
-          pip install --upgrade pip
-          pip install buildozer cython virtualenv
-
-      - name: Компіляція APK (Android 9 + 13, armeabi-v7a + arm64-v8a)
-        run: |
-          buildozer android debug
-
-      - name: Збереження готового APK файлу
+      # Збереження готового .apk файлу в артефакти
+      - name: Завантаження готового APK
         uses: actions/upload-artifact@v4
         with:
-          name: PCRemote-Android-9-13-APK
+          name: PCRemote-Android-APK
           path: bin/*.apk
