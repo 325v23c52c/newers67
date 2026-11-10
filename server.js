@@ -306,8 +306,13 @@ async function startTelegramBot() {
     }
 }
 
+// Щоб одна помилка mineflayer/мережі не вбивала весь процес (важливо для 24/7 на Railway)
+process.on('uncaughtException', (err) => console.log(`⚠️ uncaughtException: ${err.message}`));
+process.on('unhandledRejection', (err) => console.log(`⚠️ unhandledRejection: ${err && err.message ? err.message : err}`));
+
+// Railway сам передає PORT; слухаємо на всіх інтерфейсах
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
     console.log(`Сервер запущено на порту ${PORT}`);
     startTelegramBot();
 });
