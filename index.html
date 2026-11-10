@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Aternos Bot 24/7</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        h2 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #444;
+            background: #2d2d2d;
+            color: #fff;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        .inline-group {
+            display: flex;
+            gap: 10px;
+        }
+        .inline-group input {
+            flex: 1;
+        }
+        .inline-group button {
+            width: 140px;
+            margin-top: 0;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        #startBtn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        #startBtn:hover {
+            background-color: #45a049;
+        }
+        #stopBtn {
+            background-color: #f44336;
+            color: white;
+        }
+        #stopBtn:hover {
+            background-color: #d32f2f;
+        }
+        #sendCmdBtn {
+            background-color: #2196F3;
+            color: white;
+        }
+        #sendCmdBtn:hover {
+            background-color: #1976D2;
+        }
+        .status {
+            text-align: center;
+            font-weight: bold;
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: 6px;
+            background: #2d2d2d;
+        }
+        .logs {
+            background: #000;
+            color: #00ff00;
+            padding: 10px;
+            height: 200px;
+            overflow-y: scroll;
+            font-family: monospace;
+            border-radius: 6px;
+            font-size: 13px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Minecraft 24/7 Bot Panel</h2>
+        
+        <div class="form-group">
+            <label for="host">IP сервера (наприклад: myserver.aternos.me:12345):</label>
+            <input type="text" id="host" placeholder="Введи IP:порт сервера">
+        </div>
+
+        <div class="form-group">
+            <label for="count">Кількість ботів:</label>
+            <input type="number" id="count" value="1" min="1" placeholder="Кількість">
+        </div>
+
+        <div class="form-group">
+            <label for="version">Версія гри:</label>
+            <select id="version" name="version">
+                <option value="auto">Автоматично (Auto)</option>
+                <option value="1.16.5">1.16.5</option>
+                <option value="1.17">1.17</option>
+                <option value="1.17.1">1.17.1</option>
+                <option value="1.18">1.18</option>
+                <option value="1.18.1">1.18.1</option>
+                <option value="1.18.2">1.18.2</option>
+                <option value="1.19">1.19</option>
+                <option value="1.19.1">1.19.1</option>
+                <option value="1.19.2">1.19.2</option>
+                <option value="1.19.3">1.19.3</option>
+                <option value="1.19.4">1.19.4</option>
+                <option value="1.20">1.20</option>
+                <option value="1.20.1">1.20.1</option>
+                <option value="1.20.2">1.20.2</option>
+                <option value="1.20.3">1.20.3</option>
+                <option value="1.20.4">1.20.4</option>
+                <option value="1.20.5">1.20.5</option>
+                <option value="1.20.6">1.20.6</option>
+                <option value="1.21">1.21</option>
+                <option value="1.21.1">1.21.1</option>
+                <option value="1.21.2">1.21.2</option>
+                <option value="1.21.3">1.21.3</option>
+                <option value="1.21.4">1.21.4</option>
+                <option value="1.21.5">1.21.5</option>
+                <option value="1.21.6">1.21.6</option>
+                <option value="1.21.7">1.21.7</option>
+                <option value="1.21.8">1.21.8</option>
+                <option value="1.21.9">1.21.9</option>
+                <option value="1.21.10">1.21.10</option>
+                <option value="1.21.11">1.21.11</option>
+            </select>
+        </div>
+
+        <button id="startBtn">Запустити ботів (Автономний режим 24/7)</button>
+        <button id="stopBtn">Зупинити ботів</button>
+
+        <div class="form-group" style="margin-top: 20px;">
+            <label for="commandInput">Команда для ботів (наприклад: /fly):</label>
+            <div class="inline-group">
+                <input type="text" id="commandInput" placeholder="/fly або /help">
+                <button id="sendCmdBtn">Виконати</button>
+            </div>
+        </div>
+
+        <div class="status" id="statusText">Статус: Зупинено</div>
+
+        <label>Логи роботи:</label>
+        <div class="logs" id="logsBox"></div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        const hostInput = document.getElementById('host');
+        const countInput = document.getElementById('count');
+        const versionSelect = document.getElementById('version');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const commandInput = document.getElementById('commandInput');
+        const sendCmdBtn = document.getElementById('sendCmdBtn');
+        const statusText = document.getElementById('statusText');
+        const logsBox = document.getElementById('logsBox');
+
+        startBtn.addEventListener('click', () => {
+            const host = hostInput.value.trim();
+            const count = parseInt(countInput.value) || 1;
+            const version = versionSelect.value;
+            if (!host) {
+                alert('Будь ласка, введіть IP сервера!');
+                return;
+            }
+            socket.emit('start-bot', { host, count, version });
+        });
+
+        stopBtn.addEventListener('click', () => {
+            socket.emit('stop-bot');
+        });
+
+        sendCmdBtn.addEventListener('click', () => {
+            const command = commandInput.value.trim();
+            if (!command) {
+                alert('Введіть команду!');
+                return;
+            }
+            socket.emit('send-command', { command });
+            commandInput.value = '';
+        });
+
+        socket.on('status', (status) => {
+            if (status === 'running') {
+                statusText.innerText = 'Статус: Працює автономно 24/7 🟢';
+                statusText.style.color = '#4CAF50';
+            } else {
+                statusText.innerText = 'Статус: Зупинено 🔴';
+                statusText.style.color = '#f44336';
+            }
+        });
+
+        socket.on('log', (msg) => {
+            logsBox.innerText += msg + '\n';
+            logsBox.scrollTop = logsBox.scrollHeight;
+        });
+    </script>
+</body>
+</html>
